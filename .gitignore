@@ -1,0 +1,9 @@
+*.exe
+*.s
+*.cph
+*.o
+tempCodeRunnerFile.*
+*.cpp
+.vscode
+/midterm
+*.h
