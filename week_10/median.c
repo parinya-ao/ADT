@@ -11,7 +11,7 @@ typedef struct
 heap_t *init_heap(int n)
 {
     heap_t *heap = (heap_t *)malloc(sizeof(heap_t));
-    heap->data = (int *)malloc(n * sizeof(int));
+    heap->data = (int *)malloc((n + 1) * sizeof(int));
     heap->last_index = 0;
     return heap;
 }
@@ -71,7 +71,7 @@ void insert_max_heap(heap_t *heap, int target)
 int extract_min(heap_t *heap)
 {
     if (heap->last_index == 0)
-        return -1; // Empty heap
+        return -1;
 
     int min = heap->data[1];
     heap->data[1] = heap->data[heap->last_index];
@@ -178,7 +178,7 @@ int main()
     heap_t *max_heap = init_heap(n);
 
     int num;
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
         scanf("%i", &num);
 
@@ -203,7 +203,7 @@ int main()
             median = (max_heap->data[1] + min_heap->data[1]) / 2.0;
         }
 
-        printf("%i\n", median);
+        printf("%.1f\n", median);
     }
 
     free_heap(min_heap);
