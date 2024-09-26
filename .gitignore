@@ -3,7 +3,7 @@
 *.cph
 *.o
 tempCodeRunnerFile.*
-*.cpp
+# .cpp
 .vscode
 /midterm
 *.h
