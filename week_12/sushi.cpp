@@ -1,80 +1,82 @@
 #include <bits/stdc++.h>
-// cradit "https://www.youtube.com/watch?v=cjWnW0hdF1Y"
-
 using namespace std;
+
+void longestIncreasingSubsequence(double *weights, int *prices, int n);
 
 int main()
 {
     int n;
     cin >> n;
-    vector<double> wight;
-    vector<int> price(n);
+    vector<double> weights(n);
+    vector<int> prices(n);
 
-    int price1, w;
+    int priceInput, weightInput;
     for (int i = 0; i < n; i++)
     {
-        cin >> price1 >> w;
-        wight.emplace_back((double)w / (double)price1);
-        price[i] = price1;
+        cin >> priceInput >> weightInput;
+        weights[i] = (double)weightInput / (double)priceInput;
+        prices[i] = priceInput;
     }
 
-    vector<pair<int, vector<int>>> LTS(n);
-    for (auto &element : LTS)
-    {
-        element.first = 1;
-    }
+    longestIncreasingSubsequence(weights.data(), prices.data(), n);
 
-    for (int i = n - 1; i >= 0; i--)
+    return 0;
+}
+
+void longestIncreasingSubsequence(double *weights, int *prices, int n)
+{
+    vector<int> predecessors(n), lisEnd(n + 1, -1);
+    long length = 0;
+
+    for (long i = 0; i < n; i++)
     {
-        LTS[i].second.emplace_back(i);
-        for (int j = 1 + i; j < n; ++j)
+        long low = 1, high = length + 1;
+
+        while (low < high)
         {
-            if (wight[i] < wight[j])
+            long mid = low + (high - low) / 2;
+            if (weights[lisEnd[mid]] > weights[i])
             {
-                if (LTS[i].first < LTS[j].first + 1)
-                {
-                    LTS[i].first = 1 + LTS[j].first;
-                    LTS[i].second = LTS[j].second;
-                    LTS[i].second.emplace_back(i);
-                }
+                high = mid;
+            }
+            else
+            {
+                low = mid + 1;
             }
         }
-    }
 
-    sort(LTS.begin(), LTS.end()); // change to using merge sort
-    reverse(LTS.begin(), LTS.end());
+        long lisLength = low;
+        predecessors[i] = lisEnd[lisLength - 1];
+        lisEnd[lisLength] = i;
 
-    vector<int> ans(n, 0);
-    auto itr = LTS.begin();
-    int sum = 0;
-
-    for (auto itr = LTS.begin(); itr != LTS.end(); ++itr)
-    {
-        cout << itr->first << " ";
-        for (auto jtr = itr->second.rbegin(); jtr != itr->second.rend(); ++jtr)
+        if (lisLength > length)
         {
-            cout << *jtr << " ";
+            length = lisLength;
         }
-        cout << endl;
     }
 
-    for (auto jtr = itr->second.rbegin(); jtr != itr->second.rend(); ++jtr)
+    vector<int> resultSequence(length);
+    long k = lisEnd[length];
+
+    for (long j = length - 1; j >= 0; j--)
     {
-        cout << *jtr << " ";
-        ans[*jtr] = 1;
+        resultSequence[j] = k;
+        k = predecessors[k];
+    }
+
+    vector<int> binaryResult(n, 0);
+    int totalPrice = 0; // เปลี่ยนจาก unsigned long เป็น int
+    for (unsigned long j = 0; j < length; j++)
+    {
+        binaryResult[resultSequence[j]] = 1;
+        totalPrice += prices[resultSequence[j]];
+    }
+
+    for (unsigned long j = 0; j < n; j++)
+    {
+        cout << binaryResult[j] << " ";
     }
     cout << endl;
 
-    for (int i = 0; i < n; i++)
-    {
-        cout << ans[i] << " ";
-        if (ans[i] == 1)
-        {
-            sum += price[i];
-        }
-    }
-    // cout << endl;
-    // cout << sum << endl;
-
-    return 0;
+    cout << totalPrice << endl;
 }
