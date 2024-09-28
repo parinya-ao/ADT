@@ -65,14 +65,14 @@ void longestIncreasingSubsequence(double *weights, int *prices, int n)
     }
 
     vector<int> binaryResult(n, 0);
-    int totalPrice = 0; // เปลี่ยนจาก unsigned long เป็น int
-    for (unsigned long j = 0; j < length; j++)
+    int totalPrice = 0;
+    for (int j = 0; j < length; j++)
     {
         binaryResult[resultSequence[j]] = 1;
         totalPrice += prices[resultSequence[j]];
     }
 
-    for (unsigned long j = 0; j < n; j++)
+    for (int j = 0; j < n; j++)
     {
         cout << binaryResult[j] << " ";
     }
