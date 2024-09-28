@@ -1,41 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-#define MAX_COMB 10000
-#define MAX_NUM 10000
-
-typedef struct
-{
-    int data[MAX_COMB][3];
-    int size;
-} Set;
-
-void initSet(Set *set)
-{
-    set->size = 0;
-}
-
-int contains(Set *set, int *comb)
-{
-    for (int i = 0; i < set->size; i++)
-    {
-        if (set->data[i][0] == comb[0] && set->data[i][1] == comb[1] && set->data[i][2] == comb[2])
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-void addCombination(Set *set, int *comb)
-{
-    if (!contains(set, comb))
-    {
-        memcpy(set->data[set->size], comb, 3 * sizeof(int));
-        set->size++;
-    }
-}
+#define MAX_NUM 100000
 
 void quickSort(int *arr, int low, int high)
 {
@@ -65,18 +31,40 @@ void quickSort(int *arr, int low, int high)
     }
 }
 
-void combination(Set *result, int *num, int start, int n, int *current_comb, int depth)
+void findThreeSum(int *nums, int n, int target)
 {
-    if (depth == 3)
-    {
-        addCombination(result, current_comb);
-        return;
-    }
+    quickSort(nums, 0, n - 1);
 
-    for (int i = start; i < n; ++i)
+    for (int i = 0; i < n - 2; i++)
     {
-        current_comb[depth] = num[i];
-        combination(result, num, i + 1, n, current_comb, depth + 1);
+        if (i > 0 && nums[i] == nums[i - 1])
+            continue;
+
+        int left = i + 1;
+        int right = n - 1;
+
+        while (left < right)
+        {
+            int sum = nums[i] + nums[left] + nums[right];
+            if (sum == target)
+            {
+                printf("%d %d %d\n", nums[i], nums[left], nums[right]);
+                while (left < right && nums[left] == nums[left + 1])
+                    left++;
+                while (left < right && nums[right] == nums[right - 1])
+                    right--;
+                left++;
+                right--;
+            }
+            else if (sum < target)
+            {
+                left++;
+            }
+            else
+            {
+                right--;
+            }
+        }
     }
 }
 
@@ -91,22 +79,7 @@ int main()
         scanf("%d", &vec[i]);
     }
 
-    quickSort(vec, 0, n - 1);
-
-    Set result;
-    initSet(&result);
-    int comb[3] = {-1, -1, -1};
-
-    combination(&result, vec, 0, n, comb, 0);
-
-    for (int i = 0; i < result.size; i++)
-    {
-        int sum = result.data[i][0] + result.data[i][1] + result.data[i][2];
-        if (sum == target)
-        {
-            printf("%d %d %d\n", result.data[i][0], result.data[i][1], result.data[i][2]);
-        }
-    }
+    findThreeSum(vec, n, target);
 
     return 0;
 }

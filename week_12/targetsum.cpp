@@ -1,55 +1,83 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
+#define MAX_NUM 100000
 using namespace std;
 
-void combination(set<vector<int>> &result, vector<int> &comb, vector<int> &num, int start)
+void quickSort(vector<int> &arr, int low, int high)
 {
-    if (comb.size() == 3)
+    if (low < high)
     {
-        result.insert(comb);
-        return;
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++)
+        {
+            if (arr[j] < pivot)
+            {
+                i++;
+                swap(arr[i], arr[j]);
+            }
+        }
+        swap(arr[i + 1], arr[high]);
+
+        int partitionIndex = i + 1;
+
+        quickSort(arr, low, partitionIndex - 1);
+        quickSort(arr, partitionIndex + 1, high);
     }
-    for (int i = start; i < num.size(); ++i)
+}
+
+void findThreeSum(vector<int> &nums, int n, int target)
+{
+    quickSort(nums, 0, n - 1);
+
+    for (int i = 0; i < n - 2; i++)
     {
-        comb.emplace_back(num[i]);
-        combination(result, comb, num, i + 1);
-        comb.pop_back();
+        if (i > 0 && nums[i] == nums[i - 1])
+            continue;
+
+        int left = i + 1;
+        int right = n - 1;
+
+        while (left < right)
+        {
+            int sum = nums[i] + nums[left] + nums[right];
+            if (sum == target)
+            {
+                cout << nums[i] << " " << nums[left] << " " << nums[right] << endl;
+                while (left < right && nums[left] == nums[left + 1])
+                    left++;
+                while (left < right && nums[right] == nums[right - 1])
+                    right--;
+                left++;
+                right--;
+            }
+            else if (sum < target)
+            {
+                left++;
+            }
+            else
+            {
+                right--;
+            }
+        }
     }
 }
 
 int main()
 {
     int n, target;
-    vector<int> vec;
+    vector<int> vec(MAX_NUM);
+
     cin >> n >> target;
-    int num;
     for (int i = 0; i < n; ++i)
     {
-        cin >> num;
-        vec.emplace_back(num);
+        cin >> vec[i];
     }
-    sort(vec.begin(), vec.end());
-    set<vector<int>> result;
-    vector<int> comb;
-    combination(result, comb, vec, 0);
-    // delete unquie
 
-    for (auto itr = result.begin(), end = result.end(); itr != end; ++itr)
-    {
-        int sum = 0;
-        for (auto jtr = itr->begin(), jnd = itr->end(); jtr != jnd; ++jtr)
-        {
-            sum += *jtr;
-        }
-        if (sum == target)
-        {
-            for (auto jtr = itr->begin(), jnd = itr->end(); jtr != jnd; ++jtr)
-            {
-                cout << *jtr << " ";
-            }
-            cout << endl;
-        }
-    }
+    findThreeSum(vec, n, target);
 
     return 0;
 }

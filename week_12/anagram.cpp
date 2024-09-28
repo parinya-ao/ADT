@@ -1,21 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 #define MAX_STR_LEN 51
-#define MAX_VECS 9999
+#define MAX_VECS 10000
 
 typedef struct
 {
     char key[MAX_STR_LEN];
-    // แก้ mav_vec ขนาดของ hash linear ให้เป็น dynamic โดยใช้ malloc
-    char **values;
+    char *values[MAX_VECS];
     int count;
 } MapEntry;
 
 MapEntry map[MAX_VECS];
 int mapSize = 0;
+
+void sortString(char *str)
+{
+    int count[26] = {0};
+    for (int i = 0; str[i]; i++)
+    {
+        count[str[i] - 'a']++;
+    }
+    int index = 0;
+    for (int i = 0; i < 26; i++)
+    {
+        while (count[i]--)
+        {
+            str[index++] = 'a' + i;
+        }
+    }
+    str[index] = '\0';
+}
 
 int findEntry(const char *key)
 {
@@ -29,57 +45,41 @@ int findEntry(const char *key)
     return -1;
 }
 
-void sortString(char *str)
-{
-    int len = strlen(str);
-    for (int i = 0; i < len - 1; i++)
-    {
-        for (int j = i + 1; j < len; j++)
-        {
-            if (str[i] > str[j])
-            {
-                char temp = str[i];
-                str[i] = str[j];
-                str[j] = temp;
-            }
-        }
-    }
-}
-
 int main()
 {
-    int n, a;
-    scanf("%d %d", &n, &a);
+    int m, n;
+    scanf("%d %d", &m, &n);
     char input[MAX_STR_LEN];
-    char copy[MAX_STR_LEN];
+    char sortedKey[MAX_STR_LEN];
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < m; i++)
     {
         scanf("%s", input);
-        strcpy(copy, input);
-        sortString(copy);
+        strcpy(sortedKey, input);
+        sortString(sortedKey);
 
-        int index = findEntry(copy);
+        int index = findEntry(sortedKey);
         if (index != -1)
         {
-            strcpy(map[index].values[map[index].count++], input);
+            map[index].values[map[index].count] = strdup(input);
+            map[index].count++;
         }
         else
         {
-            strcpy(map[mapSize].key, copy);
-            strcpy(map[mapSize].values[0], input);
+            strcpy(map[mapSize].key, sortedKey);
+            map[mapSize].values[0] = strdup(input);
             map[mapSize].count = 1;
             mapSize++;
         }
     }
 
-    char com[MAX_STR_LEN];
-    for (int i = 0; i < a; ++i)
+    char query[MAX_STR_LEN];
+    for (int i = 0; i < n; i++)
     {
-        scanf("%s", com);
-        sortString(com);
+        scanf("%s", query);
+        sortString(query);
 
-        int index = findEntry(com);
+        int index = findEntry(query);
         if (index != -1)
         {
             for (int j = 0; j < map[index].count; j++)
@@ -91,6 +91,14 @@ int main()
         else
         {
             printf("\n");
+        }
+    }
+
+    for (int i = 0; i < mapSize; i++)
+    {
+        for (int j = 0; j < map[i].count; j++)
+        {
+            free(map[i].values[j]);
         }
     }
 
