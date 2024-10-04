@@ -3,14 +3,14 @@
 
 typedef struct
 {
-    int numVertices;
+    int num_vertices;
     int **adjMatrix;
 } Graph;
 
 Graph *createGraph(int V)
 {
     Graph *graph = (Graph *)malloc(sizeof(Graph));
-    graph->numVertices = V;
+    graph->num_vertices = V;
     graph->adjMatrix = (int **)malloc(V * sizeof(int *));
     for (int i = 0; i < V; i++)
     {
@@ -28,15 +28,15 @@ void addEdge(Graph *graph, int src, int dest, int weight)
 void visualize(Graph *graph)
 {
     printf("  ");
-    for (int i = 0; i < graph->numVertices; ++i)
+    for (int i = 0; i < graph->num_vertices; ++i)
     {
         printf("%d ", i);
     }
     printf("\n");
-    for (int i = 0; i < graph->numVertices; ++i)
+    for (int i = 0; i < graph->num_vertices; ++i)
     {
         printf("%d ", i);
-        for (int j = 0; j < graph->numVertices; ++j)
+        for (int j = 0; j < graph->num_vertices; ++j)
         {
             printf("%d ", graph->adjMatrix[i][j]);
         }
@@ -46,7 +46,7 @@ void visualize(Graph *graph)
 
 void freeGraph(Graph *graph)
 {
-    for (int i = 0; i < graph->numVertices; i++)
+    for (int i = 0; i < graph->num_vertices; i++)
     {
         free(graph->adjMatrix[i]);
     }

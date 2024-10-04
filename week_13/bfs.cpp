@@ -7,7 +7,7 @@ using namespace std;
 class Grpah
 {
 private:
-    int numVertices;
+    int num_vertices;
     vector<vector<int>> adjMatrix;
 
     void dfshelp(int vertex, vector<bool> &visited)
@@ -15,7 +15,7 @@ private:
         visited[vertex] = true;
         cout << vertex << " ";
 
-        for (int i = 0; i < numVertices; ++i)
+        for (int i = 0; i < num_vertices; ++i)
         {
             if (adjMatrix[vertex][i] != 0 && !visited[i])
             {
@@ -25,7 +25,7 @@ private:
     }
 
 public:
-    Grpah(int V) : numVertices(V), adjMatrix(V, vector<int>(V, 0)) {}
+    Grpah(int V) : num_vertices(V), adjMatrix(V, vector<int>(V, 0)) {}
 
     void addEdge(int src, int dest, int wight)
     {
@@ -35,15 +35,15 @@ public:
     void visalize()
     {
         cout << "  ";
-        for (int i = 0; i < numVertices; ++i)
+        for (int i = 0; i < num_vertices; ++i)
         {
             cout << i << " ";
         }
         cout << endl;
-        for (auto i = 0; i < numVertices; ++i)
+        for (auto i = 0; i < num_vertices; ++i)
         {
             cout << i << " ";
-            for (auto j = 0; j < numVertices; ++j)
+            for (auto j = 0; j < num_vertices; ++j)
             {
                 cout << adjMatrix[i][j] << " ";
             }
@@ -52,7 +52,7 @@ public:
     }
     void bfs(int startNode)
     {
-        vector<bool> visited(numVertices, false);
+        vector<bool> visited(num_vertices, false);
         queue<int> q;
 
         visited[startNode] = true; // Mark start node as visited
@@ -64,7 +64,7 @@ public:
             q.pop();
 
             cout << current << " ";
-            for (int i = 0; i < numVertices; ++i)
+            for (int i = 0; i < num_vertices; ++i)
             {
                 if (adjMatrix[current][i] != 0 && !visited[i])
                 {
@@ -78,7 +78,7 @@ public:
 
     void dfs(int startNode)
     {
-        vector<bool> visited(numVertices, false);
+        vector<bool> visited(num_vertices, false);
         dfshelp(startNode, visited);
     }
 

@@ -7,7 +7,7 @@
 
 typedef struct
 {
-    int numVertices;
+    int num_vertices;
     int **adjMatrix;
 } Graph;
 
@@ -16,7 +16,7 @@ void dfshelp(Graph *graph, int vertex, bool *visited)
     visited[vertex] = true;
     printf("%d ", vertex);
 
-    for (int i = 0; i < graph->numVertices; ++i)
+    for (int i = 0; i < graph->num_vertices; ++i)
     {
         if (graph->adjMatrix[vertex][i] != 0 && !visited[i])
         {
@@ -28,7 +28,7 @@ void dfshelp(Graph *graph, int vertex, bool *visited)
 Graph *createGraph(int V)
 {
     Graph *graph = (Graph *)malloc(sizeof(Graph));
-    graph->numVertices = V;
+    graph->num_vertices = V;
     graph->adjMatrix = (int **)malloc(V * sizeof(int *));
     for (int i = 0; i < V; i++)
     {
@@ -46,15 +46,15 @@ void addEdge(Graph *graph, int src, int dest, int weight)
 void visualize(Graph *graph)
 {
     printf("  ");
-    for (int i = 0; i < graph->numVertices; ++i)
+    for (int i = 0; i < graph->num_vertices; ++i)
     {
         printf("%d ", i);
     }
     printf("\n");
-    for (int i = 0; i < graph->numVertices; ++i)
+    for (int i = 0; i < graph->num_vertices; ++i)
     {
         printf("%d ", i);
-        for (int j = 0; j < graph->numVertices; ++j)
+        for (int j = 0; j < graph->num_vertices; ++j)
         {
             printf("%d ", graph->adjMatrix[i][j]);
         }
@@ -64,10 +64,10 @@ void visualize(Graph *graph)
 
 int *Dijkstra(Graph *graph, int start)
 {
-    int *distance = (int *)malloc(graph->numVertices * sizeof(int));
-    bool *visited = (bool *)malloc(graph->numVertices * sizeof(bool));
+    int *distance = (int *)malloc(graph->num_vertices * sizeof(int));
+    bool *visited = (bool *)malloc(graph->num_vertices * sizeof(bool));
 
-    for (int i = 0; i < graph->numVertices; i++)
+    for (int i = 0; i < graph->num_vertices; i++)
     {
         distance[i] = INF;
         visited[i] = false;
@@ -75,10 +75,10 @@ int *Dijkstra(Graph *graph, int start)
 
     distance[start] = 0;
 
-    for (int count = 0; count < graph->numVertices - 1; ++count)
+    for (int count = 0; count < graph->num_vertices - 1; ++count)
     {
         int minDistance = INF, u = -1;
-        for (int v = 0; v < graph->numVertices; ++v)
+        for (int v = 0; v < graph->num_vertices; ++v)
         {
             if (!visited[v] && distance[v] < minDistance)
             {
@@ -91,7 +91,7 @@ int *Dijkstra(Graph *graph, int start)
             break;
         }
         visited[u] = true;
-        for (int v = 0; v < graph->numVertices; ++v)
+        for (int v = 0; v < graph->num_vertices; ++v)
         {
             if (!visited[v] && graph->adjMatrix[u][v] != 0 && distance[u] != INF && distance[u] + graph->adjMatrix[u][v] < distance[v])
             {

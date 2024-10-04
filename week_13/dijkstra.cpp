@@ -7,7 +7,7 @@ using namespace std;
 class Grpah
 {
 private:
-    int numVertices;
+    int num_vertices;
     vector<vector<int>> adjMatrix;
 
     void dfshelp(int vertex, vector<bool> &visited)
@@ -15,7 +15,7 @@ private:
         visited[vertex] = true;
         cout << vertex << " ";
 
-        for (int i = 0; i < numVertices; ++i)
+        for (int i = 0; i < num_vertices; ++i)
         {
             if (adjMatrix[vertex][i] != 0 && !visited[i])
             {
@@ -25,7 +25,7 @@ private:
     }
 
 public:
-    Grpah(int V) : numVertices(V), adjMatrix(V, vector<int>(V, 0)) {}
+    Grpah(int V) : num_vertices(V), adjMatrix(V, vector<int>(V, 0)) {}
 
     void addEdge(int src, int dest, int wight)
     {
@@ -35,15 +35,15 @@ public:
     void visalize()
     {
         cout << "  ";
-        for (int i = 0; i < numVertices; ++i)
+        for (int i = 0; i < num_vertices; ++i)
         {
             cout << i << " ";
         }
         cout << endl;
-        for (auto i = 0; i < numVertices; ++i)
+        for (auto i = 0; i < num_vertices; ++i)
         {
             cout << i << " ";
-            for (auto j = 0; j < numVertices; ++j)
+            for (auto j = 0; j < num_vertices; ++j)
             {
                 cout << adjMatrix[i][j] << " ";
             }
@@ -53,15 +53,15 @@ public:
 
     vector<int> Dijkstra(int start)
     {
-        vector<int> distance(numVertices, INF);
-        vector<bool> visited(numVertices, false);
+        vector<int> distance(num_vertices, INF);
+        vector<bool> visited(num_vertices, false);
 
         distance[start] = 0;
 
-        for (int count = 0; count < numVertices - 1; ++count)
+        for (int count = 0; count < num_vertices - 1; ++count)
         {
             int minDistance = INF, u = -1;
-            for (int v = 0; v < numVertices; ++v)
+            for (int v = 0; v < num_vertices; ++v)
             {
                 if (!visited[v] && distance[v] < minDistance)
                 {
@@ -74,7 +74,7 @@ public:
                 break;
             }
             visited[u] = true;
-            for (int v = 0; v < numVertices; ++v)
+            for (int v = 0; v < num_vertices; ++v)
             {
                 if (!visited[v] && adjMatrix[u][v] != 0 && distance[u] != INF && distance[u] + adjMatrix[u][v] < distance[v])
                 {
