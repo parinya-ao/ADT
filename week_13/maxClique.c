@@ -149,3 +149,21 @@ int main()
 
     return 0;
 }
+
+/* sudo code
+function bron_kerbosch(currentClique, potentialVertices, excludedVertices):
+    if potentialVertices is empty and excludedVertices is empty:
+        save currentClique as a maximal clique
+        return
+
+    for each vertex in potentialVertices:
+        add vertex to currentClique
+
+        newPotentialVertices = filter vertices from potentialVertices connected to vertex
+        newExcludedVertices = filter vertices from excludedVertices connected to vertex
+
+        bron_kerbosch(newClique, newPotentialVertices, newExcludedVertices)
+
+        remove vertex from potentialVertices
+        add vertex to excludedVertices
+*/
